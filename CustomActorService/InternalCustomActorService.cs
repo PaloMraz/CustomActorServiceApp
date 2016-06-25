@@ -30,22 +30,16 @@ namespace CustomActorService
     }
 
 
-    protected override IEnumerable<ServiceReplicaListener> CreateServiceReplicaListeners()
-    {
-      var remotingListener = new ServiceReplicaListener(context => this.CreateServiceRemotingListener(context));
-      return new ServiceReplicaListener[] { remotingListener };
-    }
-
-
     protected async override Task RunAsync(CancellationToken cancellationToken)
     {
       await base.RunAsync(cancellationToken);
 
-      for(int i = 0; i < 10; i++)
+      for (int i = 0; i < 10; i++)
       {
         ICustomActor proxy = ActorProxy.Create<ICustomActor>(new ActorId(i));
         await proxy.StartAsync();
       }
     }
+
   }
 }
